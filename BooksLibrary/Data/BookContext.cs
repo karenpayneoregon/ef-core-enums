@@ -1,5 +1,6 @@
 ﻿using BooksLibrary.Models;
 using Microsoft.EntityFrameworkCore;
+#pragma warning disable CS8618
 
 namespace BooksLibrary.Data;
 
@@ -10,7 +11,11 @@ public class BookContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BookLibrary;Trusted_Connection=True");
+        optionsBuilder.UseSqlServer(
+            """
+                          Server=(localdb)\mssqllocaldb;Database=BookLibrary;
+                          Trusted_Connection=True
+                          """);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

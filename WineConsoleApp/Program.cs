@@ -11,10 +11,12 @@ internal partial class Program
 
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
-        //WineOperations.Run();
+        WineOperations.Run();
+
+        Line();
+
         WineOperations.Indexing();
 
-        Console.WriteLine("Finished");
-        Console.ReadLine();
+        ExitPrompt();
     }
 }

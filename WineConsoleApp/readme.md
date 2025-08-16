@@ -2,11 +2,26 @@
 
 A basic code sample on working with [enumerations](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum) as a model for EF Core. For the demonstration to be easy to run the first time executing the application a check is done to see if the database exists, if not, the database is created and tables are populated in the DbContext.
 
-# Tables
+## ⚙️ Initial Setup
+
+After first run set `EntityConfiguration.CreateNew` to `false` in the `appsettings.json` file to prevent the database from being recreated.
+
+```json
+{
+  "ConnectionStrings": {
+    "MainConnection": "Server=(localdb)\\mssqllocaldb;Database=EF.Wines;Trusted_Connection=True"
+  },
+  "EntityConfiguration": {
+    "CreateNew": true
+  }
+}
+``` 
+
+## Tables
 
 ![Tables](assets/tables.png)
 
-# Conversions
+## Conversions
 
 Using [HasConversion](https://learn.microsoft.com/en-us/ef/core/modeling/value-conversions?tabs=data-annotations#the-valueconverter-class) for [WineType](Models/WineType.cs) to map between enum member and int.
 
@@ -20,7 +35,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         .HasConversion<int>();
 ```
 
-# Code
+## Code
 
 Example to filter on a specific wine type
 
@@ -37,7 +52,7 @@ List<WineGroupItem> allWinesGrouped = context.Wines
 ```
 
 
-# T4 Template
+## T4 Template
 
 This is optional, the idea is if someone added, deletes or modifies data in the table WineTypes the enum is also updated. To take this a step farther [invoke text transformation in the build process](https://learn.microsoft.com/en-us/visualstudio/modeling/code-generation-in-a-build-process?view=vs-2022&tabs=csharp).
 

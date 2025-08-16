@@ -1,4 +1,5 @@
-﻿using WineConsoleApp.Classes;
+﻿using ConsoleConfigurationLibrary.Classes;
+using WineConsoleApp.Classes;
 using WineConsoleApp.Data;
 
 namespace WineConsoleApp;
@@ -9,8 +10,12 @@ internal partial class Program
     {
         using var context = new WineContext();
 
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
+        if (EntitySettings.Instance.CreateNew)
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+        }
+
         WineOperations.Run();
 
         Line();

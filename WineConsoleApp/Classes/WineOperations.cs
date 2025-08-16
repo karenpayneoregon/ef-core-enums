@@ -7,12 +7,27 @@ namespace WineConsoleApp.Classes;
 
 public class WineOperations
 {
+
+    /// <summary>
+    /// Demonstrates indexing operations on a collection of wines.
+    /// </summary>
+    /// <remarks>
+    /// This method retrieves all wines from the database, processes them into a container with indexing information,
+    /// and displays details about the wines in a formatted output. It also demonstrates the use of ranges to extract
+    /// subsets of wines based on specific criteria.
+    /// </remarks>
+    /// <example>
+    /// Example usage:
+    /// <code>
+    /// WineOperations.Indexing();
+    /// </code>
+    /// </example>
     public static void Indexing()
     {
-        using var context = new WineContext();
+        using WineContext context = new();
         var wines = context.Wines.ToList();
 
-        var wineContainer = RangeHelpers.Get<Wine>(wines);
+        var wineContainer = RangeHelpers.Get(wines);
         StringBuilder builder = new();
 
         foreach (var container in wineContainer)
@@ -21,18 +36,21 @@ public class WineOperations
                                $"{container.Value.WineType,-7} " +
                                $"{container.StartIndex,-6} " +
                                $"{container.EndIndex,-7}" +
-                               $"{container.MonthIndex}");
+                               $"{container.OrdinalIndex}");
         }
         Console.WriteLine(" Wine                      Type    Start  End    Ordinal");
         Console.WriteLine("                                   range  range  index");
         Console.WriteLine(builder);
 
         Console.WriteLine();
+
         Index indexer = wineContainer.FindIndex(w => w.Value.Name == "Pinot Grigi");
 
         Console.WriteLine("Last two wines");
-        Range range = Range.StartAt(indexer);
+        
+        var range = Range.StartAt(indexer);
         var lastTwoWines = wines.ToArray()[range];
+
         foreach (var wine in lastTwoWines)
         {
             Console.WriteLine(wine.Name);
@@ -50,9 +68,17 @@ public class WineOperations
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Executes various operations to display and group wines by their type.
+    /// </summary>
+    /// <remarks>
+    /// This method retrieves wine data from the database, groups it by wine type, 
+    /// and displays the grouped data. It also lists all wines and filters wines 
+    /// by specific types such as Rose and Red.
+    /// </remarks>
     public static void Run()
     {
-        using var context = new WineContext();
+        using WineContext context = new();
 
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("Grouped");
@@ -110,6 +136,7 @@ public class WineOperations
         Console.ResetColor();
 
         List<Wine> redWines = context.Wines.Where(wine => wine.WineType == WineType.Red).ToList();
+
         foreach (Wine wine in redWines)
         {
             Console.WriteLine($"{wine.Name,30}");

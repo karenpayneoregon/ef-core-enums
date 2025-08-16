@@ -1,7 +1,11 @@
 ﻿using ConsoleHelperLibrary.Classes;
 using Spectre.Console;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.DependencyInjection;
+using static ConsoleConfigurationLibrary.Classes.ApplicationConfiguration;
+using ConsoleConfigurationLibrary.Classes;
 
+// ReSharper disable once CheckNamespace
 namespace WineConsoleApp;
 internal partial class Program
 {
@@ -10,7 +14,9 @@ internal partial class Program
     {
         Console.Title = "Code sample";
         
-        WindowUtility.SetConsoleWindowPosition(WindowUtility.AnchorWindow.Fill);
+        WindowUtility.SetConsoleWindowPosition(WindowUtility.AnchorWindow.Center);
+
+        Setup();
 
         AnsiConsole.Write(
             new FigletText("EF Core Enum conversions")
@@ -20,6 +26,15 @@ internal partial class Program
             new FigletText("Wines")
                 .Alignment(Justify.Center)
                 .Color(Color.White));
+    }
+
+    private static void Setup()
+    {
+        var services = ConfigureServices();
+        using var provider = services.BuildServiceProvider();
+        var setup = provider.GetService<SetupServices>();
+        setup!.GetConnectionStrings();
+        setup.GetEntitySettings();
     }
 
     private static void Render(Rule rule)

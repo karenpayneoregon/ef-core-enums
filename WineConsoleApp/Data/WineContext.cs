@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ConsoleConfigurationLibrary.Classes;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WineConsoleApp.Models;
 
 #pragma warning disable CS8618
@@ -11,7 +13,9 @@ public class WineContext : DbContext
     public DbSet<WineTypes> WineTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=EF.Wines;Trusted_Connection=True");
+        => optionsBuilder.UseSqlServer(AppConnections.Instance.MainConnection)
+            .LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +23,9 @@ public class WineContext : DbContext
             .Entity<Wine>()
             .Property(e => e.WineType)
             .HasConversion<int>();
+
+        if (!EntitySettings.Instance.CreateNew)
+            return;
 
         modelBuilder.Entity<WineTypes>().HasData(
             new WineTypes() {Id = 1, TypeName = "Red", Description = "Classic red"},

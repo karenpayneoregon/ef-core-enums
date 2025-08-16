@@ -1,4 +1,5 @@
 ﻿using BooksLibrary.Models;
+using ConsoleConfigurationLibrary.Classes;
 using Microsoft.EntityFrameworkCore;
 #pragma warning disable CS8618
 
@@ -11,11 +12,7 @@ public class BookContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            """
-                          Server=(localdb)\mssqllocaldb;Database=BookLibrary;
-                          Trusted_Connection=True
-                          """);
+        optionsBuilder.UseSqlServer(AppConnections.Instance.MainConnection);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

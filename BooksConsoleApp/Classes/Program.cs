@@ -1,6 +1,10 @@
-﻿using ConsoleHelperLibrary.Classes;
-using System.Runtime.CompilerServices;
+﻿using ConsoleConfigurationLibrary.Classes;
+using ConsoleHelperLibrary.Classes;
 using Spectre.Console;
+using System.Runtime.CompilerServices;
+
+using Microsoft.Extensions.DependencyInjection;
+using static ConsoleConfigurationLibrary.Classes.ApplicationConfiguration;
 
 
 // ReSharper disable once CheckNamespace
@@ -12,7 +16,8 @@ partial class Program
     public static void Init()
     {
         Console.Title = "Code sample";
-        WindowUtility.SetConsoleWindowPosition(WindowUtility.AnchorWindow.Fill);
+        WindowUtility.SetConsoleWindowPosition(WindowUtility.AnchorWindow.Center);
+        Setup();
         AnsiConsole.Write(
             new FigletText("EF Core Enum conversions")
                 .Alignment(Justify.Center)
@@ -30,5 +35,14 @@ partial class Program
         Console.WriteLine();
         Render(new Rule($"[yellow]Press a key to exit the demo[/]").RuleStyle(Style.Parse("silver")).Centered());
         Console.ReadLine();
+    }
+
+    private static void Setup()
+    {
+        var services = ConfigureServices();
+        using var provider = services.BuildServiceProvider();
+        var setup = provider.GetService<SetupServices>();
+        setup!.GetConnectionStrings();
+        setup.GetEntitySettings();
     }
 }

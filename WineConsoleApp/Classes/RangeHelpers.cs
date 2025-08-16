@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using WineConsoleApp.Models;
+﻿using WineConsoleApp.Models;
 
 namespace WineConsoleApp.Classes;
 

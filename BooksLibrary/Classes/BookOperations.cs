@@ -7,10 +7,17 @@ namespace BooksLibrary.Classes;
 public class BookOperations
 {
     /// <summary>
-    /// Create database and tables, populate and return as a list of <see cref="Book"/>
+    /// Adds a predefined list of books to the database and retrieves all books.
     /// </summary>
-    /// <param name="createDatabase">Pass true to create for the first time</param>
-    public static List<Book> AddViewBooks(bool createDatabase = false)
+    /// <param name="createDatabase">
+    /// A boolean value indicating whether to create the database and its tables before adding books.
+    /// Pass <c>true</c> to create the database and populate it with books for the first time.
+    /// Pass <c>false</c> to retrieve the existing list of books without recreating the database.
+    /// </param>
+    /// <returns>
+    /// A list of <see cref="Book"/> objects representing all books in the database.
+    /// </returns>
+    public static List<Book> AddBooks(bool createDatabase = false)
     {
         using var context = new BookContext();
 

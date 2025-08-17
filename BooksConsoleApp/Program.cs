@@ -9,7 +9,7 @@ partial class Program
     static void Main(string[] args)
     {
         
-        var bookList = BookOperations.AddViewBooks(true);
+        var bookList = BookOperations.AddBooks(true);
 
         var allBooksTable = new Table()
             .RoundedBorder()
